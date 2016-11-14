@@ -24,13 +24,14 @@ class UrlViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         UrlId = serializer.data['id']
         instance = models.Url.objects.get(id=UrlId)
-        request['shortUrl'] = self.encode(UrlId,"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        request['shortUrl'] = self.encode(UrlId)
         serializer = self.get_serializer(instance, data=request, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def encode(self,num, alphabet):
+    def encode(self,num):
+        alphabet ="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         """Encode a positive number in Base X
 
         Arguments:
